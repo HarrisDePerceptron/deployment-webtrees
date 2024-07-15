@@ -5,7 +5,7 @@ services:
     environment:
       PRETTY_URLS: "1"
       LANG: "en-US"
-      BASE_URL: "https://gene.usmaniclan.com"
+      BASE_URL: "https://gene.example.com"
       DB_TYPE: "pgsql"
       DB_HOST: "db"
       DB_PORT: "5432"
