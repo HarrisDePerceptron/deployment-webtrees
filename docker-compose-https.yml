@@ -1,0 +1,53 @@
+version: "3.3"
+
+services:
+  gene:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gene.entrypoints=websecure"
+      - "traefik.http.routers.gene.tls.certresolver=lets-encrypt"
+      - "traefik.http.routers.gene.rule=Host(`gene.usmaniclan.com`)"
+  traefik:
+    image: traefik:v3.0
+      #labels:
+      # - "traefik.http.routers.dashboard.rule=Host(`dashboard.gene.usmaniclan.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      #  - "traefik.http.routers.dashboard.service=api@internal"
+      #  - "traefik.http.routers.dashboard.middlewares=auth"
+      #  - "traefik.http.middlewares.auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"
+      #  - "traefik.http.routers.dashboard.entrypoints=websecure"
+      #  - "traefik.http.routers.dashboard.tls.certresolver=lets-encrypt"
+        
+      #  - "traefik.http.routers.api.entrypoints=websecure"
+      #  - "traefik.http.routers.api.tls.certresolver=lets-encrypt"
+      #  - "traefik.http.routers.api.rule=Host(`dashboard.gene.usmaniclan.com`)"
+      #  - "traefik.http.routers.api.service=api@internal"
+      #  - "traefik.http.routers.api.middlewares=auth"
+      #  - "traefik.http.middlewares.auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"
+    container_name: traefik
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.network=gene"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesResolvers.lets-encrypt.acme.email=harris.percetron@gmail.com"
+      - "--certificatesResolvers.lets-encrypt.acme.tlsChallenge=true"
+      - "--certificatesResolvers.lets-encrypt.acme.storage=/letsencrypt/acme.json"
+      # Uncomment to get Traefik dashboard
+      # - "--entryPoints.dashboard.address=:8080"
+      - "--api.dashboard=true"
+      -  "--api.insecure=true"
+
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - gene_letsencrypt:/letsencrypt
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+volumes:
+  gene_letsencrypt:
+    driver: local
+

@@ -1,0 +1,46 @@
+services:
+  gene:
+    depends_on:
+      - db
+    environment:
+      PRETTY_URLS: "1"
+      LANG: "en-US"
+      BASE_URL: "https://gene.usmaniclan.com"
+      DB_TYPE: "pgsql"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      DB_USER: "webtrees"
+      DB_PASS: "Qwerty12#$"
+      DB_NAME: "webtrees"
+      DB_PREFIX: "wt_"
+      WT_USER: "usmani"
+      WT_NAME: "usmani"
+      WT_PASS: "usmani12#$"
+      WT_EMAIL: "harris.perceptron@gmai.com"
+      PUID: "1000"
+      PGID: "1000"
+    image: ghcr.io/nathanvaughn/webtrees:latest
+      #ports:
+      #- 7000:80
+      # - 443:443
+    restart: unless-stopped
+    volumes:
+      # - ~/certs:/certs/
+      - app_data:/var/www/webtrees/data/
+
+
+  db:
+    environment:
+      POSTGRES_DB: "webtrees"
+      POSTGRES_USER: "webtrees"
+      POSTGRES_PASSWORD: "Qwerty12#$"
+    image: docker.io/library/postgres:latest
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+    driver: local
+  app_data:
+    driver: local
