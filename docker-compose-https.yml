@@ -6,7 +6,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.gene.entrypoints=websecure"
       - "traefik.http.routers.gene.tls.certresolver=lets-encrypt"
-      - "traefik.http.routers.gene.rule=Host(`gene.usmaniclan.com`)"
+      - "traefik.http.routers.gene.rule=Host(`gene.example.com`)"
   traefik:
     image: traefik:v3.0
       #labels:
@@ -32,7 +32,7 @@ services:
       - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
       - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
       - "--entryPoints.websecure.address=:443"
-      - "--certificatesResolvers.lets-encrypt.acme.email=harris.percetron@gmail.com"
+      - "--certificatesResolvers.lets-encrypt.acme.email=user@example.com"
       - "--certificatesResolvers.lets-encrypt.acme.tlsChallenge=true"
       - "--certificatesResolvers.lets-encrypt.acme.storage=/letsencrypt/acme.json"
       # Uncomment to get Traefik dashboard
